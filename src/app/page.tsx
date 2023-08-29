@@ -1,5 +1,5 @@
-import Checklist from "../../components/Checklist";
-import Progress from "../../components/Progress";
+import Checklist from "./components/Checklist";
+import Progress from "./components/Progress";
 export default function Home() {
   return (
     <main

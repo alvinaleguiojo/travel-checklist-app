@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import {
   Card,
   CardBody,
@@ -15,24 +15,41 @@ import {
 import { checklistData } from "../utils/mock";
 
 function List({ ...props }: ChecklistSection) {
+  const [completed, setCompleted] = useState(props.isCompleted);
+
+  const handleCheckboxChange = () => {
+    setCompleted(!completed);
+  };
+
+  const completedSubtasksCount = props.subList.reduce(
+    (count, sub) => count + (sub.subIsCompleted ? 1 : 0),
+    0
+  );
+
   return (
     <AccordionItem>
       <h2>
         <AccordionButton>
           <Box as="span" flex="1" textAlign="left" gap={5} display="flex">
-            <Checkbox size="lg"></Checkbox>
-            {props.title} {"(0/4)"}
+            <Checkbox
+              size="lg"
+              isChecked={completed}
+              onChange={handleCheckboxChange}
+            />
+            {props.title}{" "}
+            {`(${completedSubtasksCount}/${props.subList.length})`}
           </Box>
           <AccordionIcon />
         </AccordionButton>
       </h2>
       <AccordionPanel pb={4}>
         {props.content}
-        {props.subList?.map((list: SubSection) => (
+        {props.subList.map((sub) => (
           <SubList
-            sub_title={list.sub_title}
-            sub_content={list.sub_content}
-            key={list.sub_id}
+            sub_title={sub.sub_title}
+            sub_content={sub.sub_content}
+            subIsCompleted={sub.subIsCompleted}
+            key={sub.sub_id}
           />
         ))}
       </AccordionPanel>
@@ -41,12 +58,22 @@ function List({ ...props }: ChecklistSection) {
 }
 
 function SubList({ ...props }: SubSection) {
+  const [subIsCompleted, setSubIsCompleted] = useState(props.subIsCompleted);
+
+  const handleCheckboxChange = () => {
+    setSubIsCompleted(!subIsCompleted);
+  };
+
   return (
     <AccordionItem>
       <h2>
         <AccordionButton>
           <Box as="span" flex="1" textAlign="left" gap={5} display="flex">
-            <Checkbox size="lg"></Checkbox>
+            <Checkbox
+              size="lg"
+              isChecked={subIsCompleted}
+              onChange={handleCheckboxChange}
+            ></Checkbox>
             {props.sub_title}
           </Box>
           <AccordionIcon />
@@ -63,10 +90,11 @@ function Checklist() {
       <CardBody>
         <Text>Checklist</Text>
         <Accordion defaultIndex={[0]} allowMultiple>
-          {checklistData.map((list: ChecklistSection) => (
+          {checklistData.map((list) => (
             <List
-              content={list.content}
               title={list.title}
+              content={list.content}
+              isCompleted={list.isCompleted}
               subList={list.subList}
               key={list.id}
             />
