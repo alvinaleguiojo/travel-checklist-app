@@ -19,7 +19,7 @@ function List({ ...props }: ChecklistSection) {
     <AccordionItem>
       <h2>
         <AccordionButton>
-          <Box as="span" flex="1" textAlign="left">
+          <Box as="span" flex="1" textAlign="left" gap={5} display="flex">
             <Checkbox size="lg"></Checkbox>
             {props.title} {"(0/4)"}
           </Box>
@@ -45,7 +45,7 @@ function SubList({ ...props }: SubSection) {
     <AccordionItem>
       <h2>
         <AccordionButton>
-          <Box as="span" flex="1" textAlign="left">
+          <Box as="span" flex="1" textAlign="left" gap={5} display="flex">
             <Checkbox size="lg"></Checkbox>
             {props.sub_title}
           </Box>
