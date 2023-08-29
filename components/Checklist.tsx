@@ -14,19 +14,45 @@ import {
 } from "@chakra-ui/react";
 import { checklistData } from "../utils/mock";
 
-function List({ title, content }: ChecklistItem) {
+function List({ ...props }: ChecklistSection) {
   return (
     <AccordionItem>
       <h2>
         <AccordionButton>
           <Box as="span" flex="1" textAlign="left">
             <Checkbox size="lg"></Checkbox>
-            {title}
+            {props.title} {"(0/4)"}
           </Box>
           <AccordionIcon />
         </AccordionButton>
       </h2>
-      <AccordionPanel pb={4}>{content}</AccordionPanel>
+      <AccordionPanel pb={4}>
+        {props.content}
+        {props.subList?.map((list: SubSection) => (
+          <SubList
+            sub_title={list.sub_title}
+            sub_content={list.sub_content}
+            key={list.sub_id}
+          />
+        ))}
+      </AccordionPanel>
+    </AccordionItem>
+  );
+}
+
+function SubList({ ...props }: SubSection) {
+  return (
+    <AccordionItem>
+      <h2>
+        <AccordionButton>
+          <Box as="span" flex="1" textAlign="left">
+            <Checkbox size="lg"></Checkbox>
+            {props.sub_title}
+          </Box>
+          <AccordionIcon />
+        </AccordionButton>
+      </h2>
+      <AccordionPanel pb={4}>{props.sub_content}</AccordionPanel>
     </AccordionItem>
   );
 }
@@ -37,8 +63,13 @@ function Checklist() {
       <CardBody>
         <Text>Checklist</Text>
         <Accordion defaultIndex={[0]} allowMultiple>
-          {checklistData.map((list: ChecklistItem) => (
-            <List content={list.content} title={list.title} key={list.id} />
+          {checklistData.map((list: ChecklistSection) => (
+            <List
+              content={list.content}
+              title={list.title}
+              subList={list.subList}
+              key={list.id}
+            />
           ))}
         </Accordion>
       </CardBody>
