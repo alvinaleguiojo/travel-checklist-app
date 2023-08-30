@@ -12,3 +12,22 @@ type ChecklistSection = {
   subList: SubSection[];
   isCompleted: boolean;
 };
+
+type MarkItemCompletedPayload = {
+  id: number;
+};
+
+type MarkSubitemCompletedPayload = {
+  itemId: number;
+  subitemId: number;
+};
+
+type MarkItemCompletedAction = {
+  type: typeof MARK_ITEM_COMPLETED;
+  payload: MarkItemCompletedPayload;
+};
+
+type MarkSubitemCompletedAction = {
+  type: typeof MARK_SUBITEM_COMPLETED;
+  payload: MarkSubitemCompletedPayload;
+};

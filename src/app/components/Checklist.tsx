@@ -12,19 +12,25 @@ import {
   AccordionPanel,
   Checkbox,
 } from "@chakra-ui/react";
-import { checklistData } from "../utils/mock";
 
 function List({ ...props }: ChecklistSection) {
   const [completed, setCompleted] = useState(props.isCompleted);
 
-  const handleCheckboxChange = () => {
+  const handleCheckboxChange = async () => {
     setCompleted(!completed);
+    await fetch("http://localhost:3000/api/checklist", {
+      method: "PUT",
+      body: JSON.stringify({
+        id: props.id,
+        isCompleted: !completed,
+      }),
+    });
   };
 
-  const completedSubtasksCount = props.subList.reduce(
-    (count, sub) => count + (sub.subIsCompleted ? 1 : 0),
-    0
-  );
+  // const completedSubtasksCount = props.subList.reduce(
+  //   (count, sub) => count + (sub.subIsCompleted ? 1 : 0),
+  //   0
+  // );
 
   return (
     <AccordionItem>
@@ -37,21 +43,21 @@ function List({ ...props }: ChecklistSection) {
               onChange={handleCheckboxChange}
             />
             {props.title}{" "}
-            {`(${completedSubtasksCount}/${props.subList.length})`}
+            {/* {`(${completedSubtasksCount}/${props.subList.length})`} */}
           </Box>
           <AccordionIcon />
         </AccordionButton>
       </h2>
       <AccordionPanel pb={4}>
         {props.content}
-        {props.subList.map((sub) => (
+        {/* {props.subList.map((sub) => (
           <SubList
             sub_title={sub.sub_title}
             sub_content={sub.sub_content}
             subIsCompleted={sub.subIsCompleted}
             key={sub.sub_id}
           />
-        ))}
+        ))} */}
       </AccordionPanel>
     </AccordionItem>
   );
@@ -84,14 +90,15 @@ function SubList({ ...props }: SubSection) {
   );
 }
 
-function Checklist() {
+function Checklist({ checklist }: { checklist: ChecklistSection[] }) {
   return (
     <Card>
       <CardBody>
         <Text>Checklist</Text>
-        <Accordion defaultIndex={[0]} allowMultiple>
-          {checklistData.map((list) => (
+        <Accordion allowMultiple>
+          {checklist.map((list: ChecklistSection) => (
             <List
+              id={list.id}
               title={list.title}
               content={list.content}
               isCompleted={list.isCompleted}

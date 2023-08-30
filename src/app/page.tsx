@@ -1,6 +1,12 @@
 import Checklist from "./components/Checklist";
 import Progress from "./components/Progress";
-export default function Home() {
+
+export default async function Home() {
+  const response = await fetch("http://localhost:3000/api/checklist", {
+    cache: "no-store",
+  });
+  const checklist: ChecklistSection[] = await response.json();
+
   return (
     <main
       style={{
@@ -15,7 +21,7 @@ export default function Home() {
       }}
     >
       <Progress />
-      <Checklist />
+      <Checklist checklist={checklist} />
     </main>
   );
 }
