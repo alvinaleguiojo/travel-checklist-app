@@ -50,7 +50,8 @@ function List({ ...props }: ChecklistSection) {
           <Box as="span" flex="1" textAlign="left" gap={5} display="flex">
             <Checkbox
               size="lg"
-              isChecked={completed}
+              isChecked={props.isCompleted}
+              disabled={!completed}
               // onChange={handleCheckboxChange}
             />
             {props.title}{" "}
