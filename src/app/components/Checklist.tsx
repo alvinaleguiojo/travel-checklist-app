@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Card,
   CardBody,
@@ -16,6 +16,16 @@ import {
 
 function List({ ...props }: ChecklistSection) {
   const [completed, setCompleted] = useState(props.isCompleted);
+
+  // Update the main checkbox when all subtasks are completed
+  useEffect(() => {
+    const allSubtasksCompleted = props.sublist?.every(
+      (sub) => sub.subIsCompleted
+    );
+    if (allSubtasksCompleted !== undefined) {
+      setCompleted(allSubtasksCompleted);
+    }
+  }, [props.sublist]);
 
   const handleCheckboxChange = async () => {
     setCompleted(!completed);
@@ -41,7 +51,7 @@ function List({ ...props }: ChecklistSection) {
             <Checkbox
               size="lg"
               isChecked={completed}
-              onChange={handleCheckboxChange}
+              // onChange={handleCheckboxChange}
             />
             {props.title}{" "}
             {`(${completedSubtasksCount}/${props?.sublist?.length})`}
