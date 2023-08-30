@@ -4,13 +4,16 @@ import { Card, CardBody, Text, Progress } from "@chakra-ui/react";
 
 function ProgressComponent({ checklist }: { checklist: ChecklistSection[] }) {
   const totalSubtasks = checklist.reduce(
-    (total, list) => total + list.sublist.length,
+    (total, list) => total + (list.sublist ? list.sublist.length : 0),
     0
   );
 
   const completedSubtasks = checklist.reduce(
     (completed, list) =>
-      completed + list.sublist.filter((sub) => sub.subIsCompleted).length,
+      completed +
+      (list.sublist
+        ? list.sublist.filter((sub) => sub.subIsCompleted).length
+        : 0),
     0
   );
 

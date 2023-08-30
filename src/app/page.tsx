@@ -1,10 +1,10 @@
 import Checklist from "./components/Checklist";
 import Progress from "./components/Progress";
 
+export const revalidate = 10;
+
 export default async function Home() {
-  const response = await fetch("http://localhost:3000/api/checklist", {
-    cache: "no-store",
-  });
+  const response = await fetch("http://localhost:3000/api/checklist");
   const checklist: ChecklistSection[] = await response.json();
 
   return (

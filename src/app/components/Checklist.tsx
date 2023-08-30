@@ -27,7 +27,7 @@ function List({ ...props }: ChecklistSection) {
     });
   };
 
-  const completedSubtasksCount = props?.sublist?.reduce(
+  const completedSubtasksCount = (props.sublist || []).reduce(
     (count, sub) => count + (sub.subIsCompleted ? 1 : 0),
     0
   );
@@ -50,7 +50,7 @@ function List({ ...props }: ChecklistSection) {
       </h2>
       <AccordionPanel pb={4}>
         {props.content}
-        {props.sublist.map((sub: SubSection) => (
+        {props.sublist?.map((sub: SubSection) => (
           <SubList
             id={sub.id}
             sub_title={sub.sub_title}
@@ -83,11 +83,13 @@ function SubList({ ...props }: SubSection) {
       <h2>
         <AccordionButton>
           <Box as="span" flex="1" textAlign="left" gap={5} display="flex">
-            <Checkbox
-              size="lg"
-              isChecked={subIsCompleted}
-              onChange={handleCheckboxChange}
-            ></Checkbox>
+            <form>
+              <Checkbox
+                size="lg"
+                isChecked={subIsCompleted}
+                onChange={handleCheckboxChange}
+              ></Checkbox>
+            </form>
             {props.sub_title}
           </Box>
           <AccordionIcon />
@@ -104,7 +106,7 @@ function Checklist({ checklist }: { checklist: ChecklistSection[] }) {
       <CardBody>
         <Text>Checklist</Text>
         <Accordion allowMultiple>
-          {checklist.map((list: ChecklistSection) => (
+          {checklist?.map((list: ChecklistSection) => (
             <List
               id={list.id}
               title={list.title}
