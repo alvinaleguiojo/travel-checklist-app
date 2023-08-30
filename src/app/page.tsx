@@ -1,11 +1,11 @@
-import Checklist from "./components/Checklist";
-import Progress from "./components/Progress";
+//components
+import Travels from "./components/Travels";
 
-export const revalidate = 10;
+// export const revalidate = 10;
 
 export default async function Home() {
-  const response = await fetch("http://localhost:3000/api/checklist");
-  const checklist: ChecklistSection[] = await response.json();
+  // const response = await fetch("http://localhost:3000/api/checklist");
+  // const checklist: ChecklistSection[] = await response.json();
 
   return (
     <main
@@ -20,8 +20,7 @@ export default async function Home() {
         backgroundColor: "#ebebeb",
       }}
     >
-      <Progress checklist={checklist} />
-      <Checklist checklist={checklist} />
+      <Travels />
     </main>
   );
 }

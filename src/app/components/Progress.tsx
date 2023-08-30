@@ -3,12 +3,12 @@ import React from "react";
 import { Card, CardBody, Text, Progress } from "@chakra-ui/react";
 
 function ProgressComponent({ checklist }: { checklist: ChecklistSection[] }) {
-  const totalSubtasks = checklist.reduce(
+  const totalSubtasks = checklist?.reduce(
     (total, list) => total + (list.sublist ? list.sublist.length : 0),
     0
   );
 
-  const completedSubtasks = checklist.reduce(
+  const completedSubtasks = checklist?.reduce(
     (completed, list) =>
       completed +
       (list.sublist

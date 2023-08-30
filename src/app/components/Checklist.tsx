@@ -11,6 +11,7 @@ import {
   AccordionIcon,
   AccordionPanel,
   Checkbox,
+  useToast,
 } from "@chakra-ui/react";
 
 function List({ ...props }: ChecklistSection) {
@@ -66,15 +67,31 @@ function List({ ...props }: ChecklistSection) {
 
 function SubList({ ...props }: SubSection) {
   const [subIsCompleted, setSubIsCompleted] = useState(props.subIsCompleted);
+  const toast = useToast();
 
   const handleCheckboxChange = async () => {
     setSubIsCompleted(!subIsCompleted);
+    toast({
+      title: "Updating",
+      description: `Travel checklist ID: ${props.id}`,
+      status: "loading",
+      duration: 1000,
+      isClosable: true,
+    });
     await fetch("http://localhost:3000/api/checklist/sublist", {
       method: "PUT",
       body: JSON.stringify({
         id: props.id,
         subIsCompleted: !subIsCompleted,
       }),
+    }).then(() => {
+      toast({
+        title: "Update Changes",
+        description: `Travel checklist ID: ${props.id}`,
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
     });
   };
 

@@ -11,6 +11,8 @@ type ChecklistSection = {
   content: string;
   sublist: SubSection[];
   isCompleted: boolean;
+  refresh?: boolean;
+  setRefresh?: void | undefined;
 };
 
 type MarkItemCompletedPayload = {
