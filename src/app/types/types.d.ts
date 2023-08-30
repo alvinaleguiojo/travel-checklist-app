@@ -1,5 +1,5 @@
 type SubSection = {
-  sub_id?: number;
+  id?: number;
   sub_title: string;
   sub_content: string;
   subIsCompleted: boolean;
@@ -9,7 +9,7 @@ type ChecklistSection = {
   id?: number;
   title: string;
   content: string;
-  subList: SubSection[];
+  sublist: SubSection[];
   isCompleted: boolean;
 };
 

@@ -27,10 +27,10 @@ function List({ ...props }: ChecklistSection) {
     });
   };
 
-  // const completedSubtasksCount = props.subList.reduce(
-  //   (count, sub) => count + (sub.subIsCompleted ? 1 : 0),
-  //   0
-  // );
+  const completedSubtasksCount = props?.sublist?.reduce(
+    (count, sub) => count + (sub.subIsCompleted ? 1 : 0),
+    0
+  );
 
   return (
     <AccordionItem>
@@ -43,21 +43,22 @@ function List({ ...props }: ChecklistSection) {
               onChange={handleCheckboxChange}
             />
             {props.title}{" "}
-            {/* {`(${completedSubtasksCount}/${props.subList.length})`} */}
+            {`(${completedSubtasksCount}/${props?.sublist?.length})`}
           </Box>
           <AccordionIcon />
         </AccordionButton>
       </h2>
       <AccordionPanel pb={4}>
         {props.content}
-        {/* {props.subList.map((sub) => (
+        {props.sublist.map((sub: SubSection) => (
           <SubList
+            id={sub.id}
             sub_title={sub.sub_title}
             sub_content={sub.sub_content}
             subIsCompleted={sub.subIsCompleted}
-            key={sub.sub_id}
+            key={sub.id}
           />
-        ))} */}
+        ))}
       </AccordionPanel>
     </AccordionItem>
   );
@@ -66,8 +67,15 @@ function List({ ...props }: ChecklistSection) {
 function SubList({ ...props }: SubSection) {
   const [subIsCompleted, setSubIsCompleted] = useState(props.subIsCompleted);
 
-  const handleCheckboxChange = () => {
+  const handleCheckboxChange = async () => {
     setSubIsCompleted(!subIsCompleted);
+    await fetch("http://localhost:3000/api/checklist/sublist", {
+      method: "PUT",
+      body: JSON.stringify({
+        id: props.id,
+        subIsCompleted: !subIsCompleted,
+      }),
+    });
   };
 
   return (
@@ -102,7 +110,7 @@ function Checklist({ checklist }: { checklist: ChecklistSection[] }) {
               title={list.title}
               content={list.content}
               isCompleted={list.isCompleted}
-              subList={list.subList}
+              sublist={list.sublist}
               key={list.id}
             />
           ))}

@@ -1,17 +1,16 @@
 "use client";
 import React from "react";
 import { Card, CardBody, Text, Progress } from "@chakra-ui/react";
-import { checklistData } from "../utils/mock";
 
-function ProgressComponent() {
-  const totalSubtasks = checklistData.reduce(
-    (total, list) => total + list.subList.length,
+function ProgressComponent({ checklist }: { checklist: ChecklistSection[] }) {
+  const totalSubtasks = checklist.reduce(
+    (total, list) => total + list.sublist.length,
     0
   );
 
-  const completedSubtasks = checklistData.reduce(
+  const completedSubtasks = checklist.reduce(
     (completed, list) =>
-      completed + list.subList.filter((sub) => sub.subIsCompleted).length,
+      completed + list.sublist.filter((sub) => sub.subIsCompleted).length,
     0
   );
 
