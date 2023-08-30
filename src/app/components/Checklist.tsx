@@ -1,5 +1,11 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, {
+  useState,
+  useEffect,
+  useContext,
+  memo,
+  useCallback,
+} from "react";
 import {
   Card,
   CardBody,
@@ -13,8 +19,9 @@ import {
   Checkbox,
   useToast,
 } from "@chakra-ui/react";
+import MyContext from "../context/RefreshContext";
 
-function List({ ...props }: ChecklistSection) {
+const List = memo(function ListComponent({ ...props }: ChecklistSection) {
   const [completed, setCompleted] = useState(props.isCompleted);
 
   // Update the main checkbox when all subtasks are completed
@@ -74,13 +81,16 @@ function List({ ...props }: ChecklistSection) {
       </AccordionPanel>
     </AccordionItem>
   );
-}
+});
 
-function SubList({ ...props }: SubSection) {
+const SubList = React.memo(function SubListComponent({ ...props }: SubSection) {
   const [subIsCompleted, setSubIsCompleted] = useState(props.subIsCompleted);
   const toast = useToast();
 
-  const handleCheckboxChange = async () => {
+  // context
+  const { setState } = useContext(MyContext)!;
+
+  const handleCheckboxChange = useCallback(async () => {
     setSubIsCompleted(!subIsCompleted);
     toast({
       title: "Updating",
@@ -103,8 +113,9 @@ function SubList({ ...props }: SubSection) {
         duration: 3000,
         isClosable: true,
       });
+      setState((prevState) => !prevState);
     });
-  };
+  }, [props.id, subIsCompleted, setState]);
 
   return (
     <AccordionItem>
@@ -126,13 +137,13 @@ function SubList({ ...props }: SubSection) {
       <AccordionPanel pb={4}>{props.sub_content}</AccordionPanel>
     </AccordionItem>
   );
-}
+});
 
 function Checklist({ checklist }: { checklist: ChecklistSection[] }) {
   return (
     <Card>
       <CardBody>
-        <Text>Checklist</Text>
+        <Text as="b">Checklist</Text>
         <Accordion allowMultiple>
           {checklist?.map((list: ChecklistSection) => (
             <List

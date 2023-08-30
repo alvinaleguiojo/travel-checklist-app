@@ -24,7 +24,9 @@ function ProgressComponent({ checklist }: { checklist: ChecklistSection[] }) {
   return (
     <Card>
       <CardBody>
-        <Text>My Travel Checklist</Text>
+        <Text fontSize="lg" as="b">
+          My Travel Checklist
+        </Text>
         <Text>
           {totalSubtasks > 0
             ? `${completionPercentage.toFixed(2)}%`

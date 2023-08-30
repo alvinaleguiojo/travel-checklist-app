@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useContext } from "react";
 
 //components
 import Checklist from "./Checklist";
@@ -8,15 +8,30 @@ import ProgressComponent from "./Progress";
 //hooks
 import useCheckList from "../hooks/useCheckList";
 
-function Travels() {
-  const [refresh, setRefresh] = React.useState<boolean>(false);
-  const { data: checklist } = useCheckList(refresh);
+//context
+import MyContext from "../context/RefreshContext";
+import { MyContextProvider } from "../context/RefreshContext";
+
+function App() {
+  // context
+  const { state } = useContext(MyContext)!;
+
+  const { data: checklist } = useCheckList(state);
 
   return (
     <>
       <ProgressComponent checklist={checklist} />
       <Checklist checklist={checklist} />
     </>
+  );
+}
+
+// Wrap Travels component with MyContextProvider
+function Travels() {
+  return (
+    <MyContextProvider>
+      <App />
+    </MyContextProvider>
   );
 }
 
