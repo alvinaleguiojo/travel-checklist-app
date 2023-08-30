@@ -17,13 +17,19 @@ function ProgressComponent({ checklist }: { checklist: ChecklistSection[] }) {
     0
   );
 
-  const completionPercentage = (completedSubtasks / totalSubtasks) * 100;
+  // Handle the case where totalSubtasks is zero
+  const completionPercentage =
+    totalSubtasks > 0 ? (completedSubtasks / totalSubtasks) * 100 : 0;
 
   return (
     <Card>
       <CardBody>
         <Text>My Travel Checklist</Text>
-        <Text>{completionPercentage.toFixed(2)}%</Text>
+        <Text>
+          {totalSubtasks > 0
+            ? `${completionPercentage.toFixed(2)}%`
+            : "No tasks"}
+        </Text>
         <Progress value={completionPercentage} />
       </CardBody>
     </Card>

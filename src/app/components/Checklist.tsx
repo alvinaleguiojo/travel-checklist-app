@@ -19,7 +19,7 @@ function List({ ...props }: ChecklistSection) {
 
   const handleCheckboxChange = async () => {
     setCompleted(!completed);
-    await fetch("http://localhost:3000/api/checklist", {
+    await fetch("/api/checklist", {
       method: "PUT",
       body: JSON.stringify({
         id: props.id,
@@ -78,7 +78,7 @@ function SubList({ ...props }: SubSection) {
       duration: 1000,
       isClosable: true,
     });
-    await fetch("http://localhost:3000/api/checklist/sublist", {
+    await fetch("/api/checklist/sublist", {
       method: "PUT",
       body: JSON.stringify({
         id: props.id,
